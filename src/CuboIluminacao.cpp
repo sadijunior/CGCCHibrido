@@ -99,6 +99,19 @@ void inicializaOpenGL()
 {
     glfwInit();
 
+    //Muita atenção aqui: alguns ambientes não aceitam essas configurações
+	//Você deve adaptar para a versão do OpenGL suportada por sua placa
+	//Sugestão: comente essas linhas de código para desobrir a versão e
+	//depois atualize (por exemplo: 4.5 com 4 e 5)
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	//Essencial para computadores da Apple
+	#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	#endif
+
     Window = glfwCreateWindow(WIDTH, HEIGHT, "Exemplo Base - CG em Tempo Real", nullptr, nullptr);
     glfwMakeContextCurrent(Window);
 
@@ -275,7 +288,7 @@ GLuint compilaShader(const char *source, GLenum type)
 void inicializaShaders()
 {
     const char *vertex_shader = R"(
-        #version 450
+        #version 400
 
         layout(location = 0) in vec3 vertex_posicao;
         layout(location = 1) in vec3 vertex_normal;
@@ -299,7 +312,7 @@ void inicializaShaders()
     )";
 
     const char *fragment_shader = R"(
-        #version 450
+        #version 400
 
         in vec3 fragPos;
         in vec3 normal;
