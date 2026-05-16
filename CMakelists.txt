@@ -78,3 +78,26 @@ foreach(EXERCISE ${EXERCISES})
     target_include_directories(${EXERCISE} PRIVATE ${CMAKE_SOURCE_DIR}/include/glad ${glm_SOURCE_DIR} ${stb_image_SOURCE_DIR})
     target_link_libraries(${EXERCISE} glfw ${OPENGL_LIBS})
 endforeach()
+
+# Função auxiliar para registrar desafios fora de src/
+function(add_challenge TARGET SOURCE)
+    add_executable(${TARGET} ${SOURCE} ${GLAD_C_FILE})
+    target_include_directories(${TARGET} PRIVATE
+        ${CMAKE_SOURCE_DIR}/include/glad
+        ${glm_SOURCE_DIR}
+        ${stb_image_SOURCE_DIR}
+    )
+    target_link_libraries(${TARGET} glfw ${OPENGL_LIBS})
+endfunction()
+
+# Desafio M1
+add_challenge(DesafioM1 src/desafios/m1/Hello3D.cpp)
+
+# Desafio M2
+add_challenge(DesafioM2 src/desafios/m2/Cube3D.cpp)
+
+# Vivencial M2
+add_challenge(VivencialM2 src/desafios/m2-vivencial/Objetos3D.cpp)
+target_compile_definitions(VivencialM2 PRIVATE
+    ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets/Modelos3D/"
+)
