@@ -107,3 +107,15 @@ add_challenge(DesafioM3 src/desafios/m3/Texturas3D.cpp)
 target_compile_definitions(DesafioM3 PRIVATE
     ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets/Modelos3D/"
 )
+
+# Desafio M4
+add_challenge(DesafioM4 src/desafios/m4/Iluminacao3D.cpp)
+target_compile_definitions(DesafioM4 PRIVATE
+    ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets/Modelos3D/"
+)
+
+# Vivencial M4
+add_challenge(VivencialM4 src/desafios/m4-vivencial/IluminacaoTresPontos.cpp)
+target_compile_definitions(VivencialM4 PRIVATE
+    ASSETS_DIR="${CMAKE_SOURCE_DIR}/assets/Modelos3D/"
+)
