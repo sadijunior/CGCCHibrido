@@ -187,6 +187,11 @@ Light keyLight;
 Light fillLight;
 Light backLight;
 
+// Toggles individuais das componentes Phong (defesa: comprovar Ka/Kd/Ks)
+bool useAmbient  = true;
+bool useDiffuse  = true;
+bool useSpecular = true;
+
 // ============================================================================
 // ESTRUTURAS DE MODELO
 // ============================================================================
@@ -270,6 +275,10 @@ uniform vec3  lightColor1, lightColor2, lightColor3;
 uniform float lightInt1, lightInt2, lightInt3;
 uniform bool  lightOn1, lightOn2, lightOn3;
 
+uniform bool  useAmbient;
+uniform bool  useDiffuse;
+uniform bool  useSpecular;
+
 out vec4 color;
 
 vec3 phongContribution(vec3 lpos, vec3 lcolor, float lint, vec3 N, vec3 V) {
@@ -277,7 +286,9 @@ vec3 phongContribution(vec3 lpos, vec3 lcolor, float lint, vec3 N, vec3 V) {
     vec3 R = reflect(-L, N);
     float diff = max(dot(N, L), 0.0);
     float spec = pow(max(dot(R, V), 0.0), max(ns, 1.0));
-    return (kd * diff + ks * spec) * lcolor * lint;
+    vec3 d = useDiffuse  ? (kd * diff) : vec3(0.0);
+    vec3 s = useSpecular ? (ks * spec) : vec3(0.0);
+    return (d + s) * lcolor * lint;
 }
 
 void main() {
@@ -293,7 +304,7 @@ void main() {
     if (activeLights == 0) ambientColor = vec3(1.0);
     else                   ambientColor /= float(activeLights);
 
-    vec3 result = ka * ambientColor;
+    vec3 result = useAmbient ? (ka * ambientColor) : vec3(0.0);
     if (lightOn1) result += phongContribution(lightPos1, lightColor1, lightInt1, N, V);
     if (lightOn2) result += phongContribution(lightPos2, lightColor2, lightInt2, N, V);
     if (lightOn3) result += phongContribution(lightPos3, lightColor3, lightInt3, N, V);
@@ -845,6 +856,10 @@ int main() {
     GLint lo2 = glGetUniformLocation(shaderID, "lightOn2");
     GLint lo3 = glGetUniformLocation(shaderID, "lightOn3");
 
+    GLint useAmbLoc  = glGetUniformLocation(shaderID, "useAmbient");
+    GLint useDiffLoc = glGetUniformLocation(shaderID, "useDiffuse");
+    GLint useSpecLoc = glGetUniformLocation(shaderID, "useSpecular");
+
     mat4 projection = perspective(radians(45.0f),
                                   (float)fbWidth / (float)fbHeight,
                                   0.1f, 100.0f);
@@ -890,6 +905,10 @@ int main() {
         glUniform1i (lo1, keyLight.on  ? 1 : 0);
         glUniform1i (lo2, fillLight.on ? 1 : 0);
         glUniform1i (lo3, backLight.on ? 1 : 0);
+
+        glUniform1i(useAmbLoc,  useAmbient  ? 1 : 0);
+        glUniform1i(useDiffLoc, useDiffuse  ? 1 : 0);
+        glUniform1i(useSpecLoc, useSpecular ? 1 : 0);
 
         glClearColor(0.12f, 0.14f, 0.18f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -965,6 +984,19 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         case GLFW_KEY_3:
             backLight.on = !backLight.on;
             cout << "Luz Back: " << (backLight.on ? "ON" : "OFF") << endl;
+            break;
+
+        case GLFW_KEY_7:
+            useAmbient = !useAmbient;
+            cout << "Componente Ambiente (Ka): " << (useAmbient ? "ON" : "OFF") << endl;
+            break;
+        case GLFW_KEY_8:
+            useDiffuse = !useDiffuse;
+            cout << "Componente Difusa (Kd):   " << (useDiffuse ? "ON" : "OFF") << endl;
+            break;
+        case GLFW_KEY_9:
+            useSpecular = !useSpecular;
+            cout << "Componente Especular (Ks):" << (useSpecular ? "ON" : "OFF") << endl;
             break;
 
         case GLFW_KEY_V:
@@ -1069,6 +1101,7 @@ void printControls() {
          << " Mouse   : Rotacionar camera\n"
          << " TAB     : Alternar objeto selecionado\n"
          << " 1/2/3   : Toggle luzes Key/Fill/Back\n"
+         << " 7/8/9   : Toggle Ambiente(Ka)/Difusa(Kd)/Especular(Ks)\n"
          << " V       : Ativar/desativar trajetoria Bezier\n"
          << " R / T / M : Modos Rotacao / Translacao / esc(M)ala\n"
          << " Setas + I/J : Translacao manual\n"
