@@ -1,0 +1,8 @@
+# MTL manually generated
+newmtl Material
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.2 0.2 0.2
+Ns 16.0
+Ke 0 0 0
+map_Kd Grass_Block_TEX.png

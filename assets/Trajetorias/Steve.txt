@@ -1,0 +1,6 @@
+# Bezier cubica - 4 pontos de controle (P0 P1 P2 P3)
+# Movimento horizontal em Y=0.4 (em cima do chao do flat world)
+ 1.0  0.4  0.0
+ 1.8  0.4 -0.8
+-0.2  0.4 -0.8
+ 1.0  0.4  0.0

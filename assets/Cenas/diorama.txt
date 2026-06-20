@@ -1,0 +1,16 @@
+# Diorama Minecraft - Trabalho GB
+# Camera FPS inicial (mais proxima dos modelos)
+CAMERA_POS 0.0 0.6 2.5
+CAMERA_YAW -90.0
+CAMERA_PITCH 0.0
+
+# Iluminacao Phong de 3 pontos (Key/Fill/Back)
+LIGHT_KEY  POS  3.0  3.0  3.0   COLOR 1.0 1.0 1.0  INT 1.0
+LIGHT_FILL POS -3.0  2.0  3.0   COLOR 0.6 0.7 1.0  INT 0.6
+LIGHT_BACK POS  0.0  3.0 -3.0   COLOR 1.0 0.9 0.7  INT 0.4
+
+# Objetos: NOME PATH POS x y z ROT rx ry rz SCALE s TRAJ arquivo
+# Mapa flat world como chao (sem trajetoria) - escala 6 unidades
+OBJECT FlatWorld flatworld/flatworld.obj       POS  0.0 0.0 0.0  ROT 0 0 0  SCALE 6.0  NOSELECT
+OBJECT Creeper   creeper/minecraft_creeper.obj POS -1.0 0.4 0.0  ROT 0 3.14159 0  SCALE 0.6  TRAJ Creeper.txt
+OBJECT Steve     steve/minecraft_-_steve.obj   POS  1.0 0.4 0.0  ROT 0 0 0       SCALE 0.6  TRAJ Steve.txt
